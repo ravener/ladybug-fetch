@@ -18,6 +18,7 @@ function getBody(res, promise = Promise) {
 }
 
 module.exports = (request) => {
+  Array.from(request.plugins).map((plugin) => plugin(request));
   return new request.promiseLibrary((resolve, reject) => {
     const options = finalizeOptions(request);
     const lib = { "https:": https, "http:": http }[options.protocol];

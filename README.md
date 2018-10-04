@@ -215,10 +215,10 @@ api("/route")
 ## TODO
 This library is still under early development and is not complete, Pull Requests are welcome if you want to contribute.
 
-- [] Add support for following redirect codes.
-- [] Form Data support
-- [] A good test suite
-- [] TypeScript typings
+- [ ] Add support for following redirect codes.
+- [ ] Form Data support
+- [ ] A good test suite
+- [ ] TypeScript typings
 
 See also comments in code with `TODO`
 
