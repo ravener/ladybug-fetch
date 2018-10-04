@@ -66,8 +66,10 @@ class RequestBase {
    * @returns {this}
    */
   send(data) {
-    if(typeof data === "object") this.data = JSON.stringify(data);
-    else this.data = data;
+    if(typeof data === "object") {
+      this.data = JSON.stringify(data);
+      this.set("Content-Type", "application/json");
+    } else this.data = data;
     return this;
   }
 
@@ -108,7 +110,7 @@ class RequestBase {
   }
 
   static applyTo(cls, ignore = []) {
-    for(const prop of ["set", "query", "promise", "use", "status", "send"]) {
+    for(const prop of ["set", "query", "promise", "use", "status", "send", "json"]) {
       if(ignore.includes(prop)) continue;
       Object.defineProperty(cls.prototype, prop, Object.getOwnPropertyDescriptor(RequestBase.prototype, prop));
     }

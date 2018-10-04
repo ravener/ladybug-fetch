@@ -22,6 +22,7 @@ module.exports = (request) => {
   return new request.promiseLibrary((resolve, reject) => {
     const options = finalizeOptions(request);
     const lib = { "https:": https, "http:": http }[options.protocol];
+    if(!lib) return reject(`Invalid or Unsupported Protocol '${options.protocol}'`);
     const req = lib.request(options);
 
     req.on("response", async(res) => {
@@ -29,7 +30,7 @@ module.exports = (request) => {
       const response = new Response(res, body);
       const status = request.validateStatus(res.statusCode);
       if(status) return resolve(response);
-      const err = new Error(`${res.statusCode}: ${http.STATUS_CODES[res.statusCode]}`);
+      const err = new Error(`${res.statusCode} ${http.STATUS_CODES[res.statusCode]}`);
       err.response = response;
       err.status = res.statusCode;
       return reject(err);
