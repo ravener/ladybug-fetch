@@ -1,0 +1,29 @@
+{
+  "name": "ladybug-fetch",
+  "version": "0.0.1",
+  "description": "A Promise based HTTP(S) client library for NodeJS",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freetnt5852/ladybug-fetch.git"
+  },
+  "keywords": [
+    "http",
+    "https",
+    "request",
+    "library",
+    "promise",
+    "es6",
+    "fetch",
+    "ladybug"
+  ],
+  "author": "Free TNT",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/freetnt5852/ladybug-fetch/issues"
+  },
+  "homepage": "https://github.com/freetnt5852/ladybug-fetch#readme"
+}
