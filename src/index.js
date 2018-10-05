@@ -20,6 +20,6 @@ ladybug.isPromise = Utils.isPromise;
 Object.assign(ladybug, require("./utils/helpers.js"));
 
 module.exports = ladybug;
-
+module.exports.default = ladybug; // For TypeScript
 
 
