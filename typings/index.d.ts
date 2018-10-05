@@ -10,6 +10,13 @@ declare module "ladybug-fetch" {
   export function isPromise(promise: any): boolean;
   export function bearer(key: string): { Authorization: string; };
   export function basic(username: string, password: string): { Authorization: any; };
+  export function get(url: string, options?: any): LadybugRequest;
+  export function post(url: string, options?: any): LadybugRequest;
+  export function put(url: string, options?: any): LadybugRequest;
+  export function patch(url: string, options?: any): LadybugRequest;
+  export default get;
+  function del(url: string, options?: any): LadybugRequest;
+  export { del as delete }
  
   export class Ladybug extends Callable {
     public constructor(options: Options);
@@ -19,7 +26,7 @@ declare module "ladybug-fetch" {
     public put(url: string, options: Options): this;
     public patch(url: string, options: Options): this;
     public delete(url: string, options: Options): this;
-    public static create(options: Options): Ladybug;
+    public static create(options?: Options): Ladybug;
   }
 
   export class Callable {
