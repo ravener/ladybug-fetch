@@ -13,7 +13,7 @@ declare module "ladybug-fetch" {
   export function post(url: string, options?: any): LadybugRequest;
   export function put(url: string, options?: any): LadybugRequest;
   export function patch(url: string, options?: any): LadybugRequest;
-  export default get;
+  export default function get(url: string, options?: any): LadybugRequest;
   export function del(url: string, options?: any): LadybugRequest;
  
   export class Ladybug extends Callable {
