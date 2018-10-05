@@ -7,7 +7,7 @@ const Response = require("./LadybugResponse.js");
 const isStream = s => typeof s === "object" && typeof s.pipe === "function";
 
 function getBody(res, promise = Promise) {
-  if(unzip.types.includes(res.headers["content-type"])) return unzip(res, promise);
+  if(unzip.types.includes(res.headers["content-encoding"])) return unzip(res, promise);
   return new promise((resolve, reject) => {
     const buffer = [];
     res
