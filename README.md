@@ -218,7 +218,7 @@ This library is still under early development and is not complete, Pull Requests
 - [ ] Add support for following redirect codes.
 - [ ] Form Data support
 - [ ] A good test suite
-- [ ] TypeScript typings
+- [x] ~~TypeScript typings~~ (Typings contributed by [@IceeMC](https://github.com/IceeMC) but untested)
 
 See also comments in code with `TODO`
 
