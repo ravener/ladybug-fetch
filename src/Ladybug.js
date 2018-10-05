@@ -21,6 +21,18 @@ class Ladybug extends Callable {
     this.data = null;
     this.plugins = new Set();
     this.baseURL = options.baseURL;
+
+    // The code behaves weird when not using property directly
+    // causing `this` to be undefined
+    // an example would be
+    // const { get } = require("ladybug-fetch");
+    // get("https://google.com") -> Cannot ready property 'request' of undefined
+    // So we bind them all here
+    this.get = this.get.bind(this);
+    this.post = this.post.bind(this);
+    this.delete = this.delete.bind(this);
+    this.patch = this.patch.bind(this);
+    this.put = this.put.bind(this);
   }
 
   request(method, url, options = {}) {
