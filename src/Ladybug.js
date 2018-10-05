@@ -70,6 +70,12 @@ class Ladybug extends Callable {
     return this.request("delete", ...args);
   }
 
+  // Issues with TypeScript to export with name `delete`
+  // So export it with this alias
+  del(...args) {
+    return this.delete(...args);
+  }
+
   static create(options = {}) {
     return new Ladybug(mergeObjects({
       headers: { "User-Agent": `ladybug-fetch/${pkg.version}` }

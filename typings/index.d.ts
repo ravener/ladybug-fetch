@@ -1,9 +1,8 @@
 import { url } from "inspector";
+import { IncomingMessage } from "http";
+import { Agent } from "https";
 
 declare module "ladybug-fetch" {
-
-  import { Agent } from "https";
-  import { IncomingMessage } from "http";
 
   export function create(options: Options): Ladybug;
   export function mergeObjects(base: any, merge: any[]): any;
@@ -15,8 +14,7 @@ declare module "ladybug-fetch" {
   export function put(url: string, options?: any): LadybugRequest;
   export function patch(url: string, options?: any): LadybugRequest;
   export default get;
-  function del(url: string, options?: any): LadybugRequest;
-  export { del as delete }
+  export function del(url: string, options?: any): LadybugRequest;
  
   export class Ladybug extends Callable {
     public constructor(options: Options);
@@ -46,7 +44,7 @@ declare module "ladybug-fetch" {
     public static applyTo(cls: object, ignore?: string[]): void;
   }
     
-  class LadybugRequest extends RequestBase {
+  export class LadybugRequest extends RequestBase {
     public constructor(options: Options);
     public agent?: Agent;
     public method: string;
@@ -55,7 +53,7 @@ declare module "ladybug-fetch" {
     public catch(callback: Function): Promise<any>
   }
   
-  class LadybugResponse {
+  export class LadybugResponse {
     public constructor(response: IncomingMessage, data: Buffer);
     public headers: any;
     public body: any;
@@ -66,12 +64,6 @@ declare module "ladybug-fetch" {
     public text: string;
     public response: IncomingMessage; // Shortcut to this.res
   }
-
-  // Export Request and Response
-  export {
-    LadybugResponse as Response,
-    LadybugRequest as Request
-  };
 
   type Options = {
     method?: string,
