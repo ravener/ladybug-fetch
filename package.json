@@ -22,8 +22,12 @@
   ],
   "author": "Free TNT",
   "license": "MIT",
+  "types": "./typings/index.d.ts",
   "bugs": {
     "url": "https://github.com/freetnt5852/ladybug-fetch/issues"
   },
-  "homepage": "https://github.com/freetnt5852/ladybug-fetch#readme"
+  "homepage": "https://github.com/freetnt5852/ladybug-fetch#readme",
+  "devDependencies": {
+    "@types/node": "^10.11.4"
+  }
 }
