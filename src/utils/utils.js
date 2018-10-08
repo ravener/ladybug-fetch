@@ -36,6 +36,10 @@ class Utils {
     if(!p) return false;
     return p instanceof Promise || typeof p.then === "function" && typeof p.catch === "function";
   }
+
+  static clone(obj) {
+    return Object.assign(Object.create(obj), obj);
+  }
 }
 
 module.exports = Utils;

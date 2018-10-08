@@ -1,7 +1,7 @@
 const Callable = require("./utils/callable.js");
 const pkg = require("../package.json");
 const Request = require("./LadybugRequest.js");
-const { mergeObjects } = require("./utils/utils.js");
+const { mergeObjects, clone } = require("./utils/utils.js");
 const { validateMethod } = require("./utils/validators.js");
 const RequestBase = require("./RequestBase");
 
@@ -41,9 +41,11 @@ class Ladybug extends Callable {
     else options.url = url;
     options.method = method;
     return new Request(mergeObjects({
-      headers: this.headers,
-      query: this._query,
-      plugins: this.plugins,
+      // We clone a few stuff here because passing the reference into the class
+      // will cause the instance defaults to be touched.
+      headers: clone(this.headers),
+      query: clone(this._query),
+      plugins: clone(this.plugins),
       baseURL: this.baseURL,
       status: this.validateStatus,
       promise: this.promiseLibrary
