@@ -14,7 +14,7 @@ class RequestBase {
     this._query = options.query || {};
     this.data = options.data || "";
     this.promiseLibrary = options.promise || Promise;
-    this.plugins = Array.isArray(options.plugins) ? new Set(options.plugins) : options.plugins || new Set();
+    this.plugins = options.plugins || [];
     this.validateStatus = options.status || function(s) { return s >= 200 && s < 400; };
   }
 

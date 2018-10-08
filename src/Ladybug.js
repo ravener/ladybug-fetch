@@ -19,7 +19,7 @@ class Ladybug extends Callable {
     this.headers = {};
     this._query = {};
     this.data = null;
-    this.plugins = new Set();
+    this.plugins = [];
     this.baseURL = options.baseURL;
 
     // The code behaves weird when not using property directly
