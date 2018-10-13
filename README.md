@@ -15,7 +15,7 @@ A Promise based HTTP(S) client library for NodeJS
 - Use a custom promise library
 
 ## Install
-**Note** It is not in npm yet and is in early development, the way to install it is with github (see below), examples in this README may or may not work or is not ready, unstable or untested and the code design may change overtime if you would like to contribute Pull Requests and/or Issues are welcome.
+**Note** It is still in early development, examples in this README may or may not work or is not ready, unstable or untested and the code design may change overtime if you would like to contribute Pull Requests and/or Issues are welcome.
 ```sh
 npm install ladybug-fetch
 ```
@@ -218,7 +218,7 @@ This library is still under early development and is not complete, Pull Requests
 - [ ] Add support for following redirect codes.
 - [ ] Form Data support
 - [ ] A good test suite
-- [x] ~~TypeScript typings~~ (Typings contributed by [@IceeMC](https://github.com/IceeMC) but untested)
+- [x] ~~TypeScript typings~~ (Typings contributed by [@IceeMC](https://github.com/IceeMC) and fixed by me)
 
 See also comments in code with `TODO`
 

@@ -62,11 +62,13 @@ class RequestBase {
 
   /**
    * Send some data to the server
-   * @param {Object|String|Buffer} data - The data to send
+   * @param {Object|String|Buffer|Stream} data - The data to send
    * @returns {this}
    */
   send(data) {
-    if(typeof data === "object") {
+    if(this.headers["Content-Type"] && this.headers["Content-Type"].includes("application/x-www-form-urlencoded")) {
+      this.data = querystring.stringify(data);
+    } else if(typeof data === "object") {
       this.data = JSON.stringify(data);
       this.set("Content-Type", "application/json");
     } else this.data = data;
