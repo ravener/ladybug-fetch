@@ -1,21 +1,17 @@
-const unzip = require("./unzip.js");
 const finalizeOptions = require("./options.js");
 const http = require("http");
 const https = require("https");
+const zlib = require("zlib");
 const Response = require("./LadybugResponse.js");
 
-const isStream = s => typeof s === "object" && typeof s.pipe === "function";
-
-function getBody(res, promise = Promise) {
-  if(unzip.types.includes(res.headers["content-encoding"])) return unzip(res, promise);
-  return new promise((resolve, reject) => {
-    const buffer = [];
-    res
-      .on("data", (chunk) => buffer.push(chunk))
-      .on("end", () => resolve(Buffer.concat(buffer)))
-      .on("error", (err) => reject(err));
-  });
+function shouldUnzip(res) {
+  // No Content, no unzip
+  if(res.statusCode === 204) return false;
+  if(res.headers["content-type"] === "0") return false;
+  return /(gzip|deflate|compress)/ig.test(res.headers["content-type"]);
 }
+
+const isStream = s => typeof s === "object" && typeof s.pipe === "function";
 
 module.exports = (request) => {
   Array.from(request.plugins).map((plugin) => plugin(request));
@@ -26,14 +22,23 @@ module.exports = (request) => {
     const req = lib.request(options);
 
     req.on("response", async(res) => {
-      const body = await getBody(res, request.promiseLibrary);
-      const response = new Response(res, body);
-      const status = request.validateStatus(res.statusCode);
-      if(status) return resolve(response);
-      const err = new Error(`${res.statusCode} ${http.STATUS_CODES[res.statusCode]}`);
-      err.response = response;
-      err.status = res.statusCode;
-      return reject(err);
+      const buffer = [];
+      //const body = await getBody(res, request.promiseLibrary);
+      let stream = res;
+      if(shouldUnzip(res)) stream = stream.pipe(zlib.createUnzip());
+      stream
+        .on("data", (chunk) => buffer.push(chunk))
+        .on("error", (err) => reject(err))
+        .on("end", () => {
+          const body = Buffer.concat(buffer);
+          const response = new Response(res, body);
+          const status = request.validateStatus(res.statusCode);
+          if(status) return resolve(response);
+          const err = new Error(`${res.statusCode} ${http.STATUS_CODE[res.statusCode]}`);
+          err.response = response;
+          err.status = res.statusCode;
+          return reject(err);
+        });
     });
     req.once("error", (err) => reject(err));
     req.once("abort", () => reject(new Error("Request Aborted")));
