@@ -7,8 +7,8 @@ const Response = require("./LadybugResponse.js");
 function shouldUnzip(res) {
   // No Content, no unzip
   if(res.statusCode === 204) return false;
-  if(res.headers["content-type"] === "0") return false;
-  return /(gzip|deflate|compress)/ig.test(res.headers["content-type"]);
+  if(res.headers["content-length"] === "0") return false;
+  return /(gzip|deflate|compress)/ig.test(res.headers["content-encoding"]);
 }
 
 const isStream = s => typeof s === "object" && typeof s.pipe === "function";
