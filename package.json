@@ -1,6 +1,6 @@
 {
   "name": "ladybug-fetch",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Promise based HTTP(S) client library for NodeJS",
   "main": "./src/index.js",
   "scripts": {
