@@ -34,7 +34,7 @@ module.exports = (request) => {
           const response = new Response(res, body);
           const status = request.validateStatus(res.statusCode);
           if(status) return resolve(response);
-          const err = new Error(`${res.statusCode} ${http.STATUS_CODE[res.statusCode]}`);
+          const err = new Error(`${res.statusCode} ${http.STATUS_CODES[res.statusCode]}`);
           err.response = response;
           err.status = res.statusCode;
           return reject(err);
