@@ -13,7 +13,7 @@ module.exports = (req) => {
   } else {
     url = parse(req.url);
   }
-  options.host = url.host;
+  options.host = url.hostname;
   if(url.port) options.port = url.port;
   options.headers = req.headers;
   options.method = req.method;
