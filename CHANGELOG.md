@@ -1,3 +1,6 @@
+# 0.0.4
+- Fixes the port problem, i.e urls like `http://localhost:3000` throws `Error: getaddrinfo ENOTFOUND localhost:3000 localhost:3000:3000`
+
 # 0.0.1 Release
 - 0.0.1 is now released on npm, it is still incomplete and missing some features but in my opinion it is enough to be useable
 - Improved request unzipping, stopped using unzip.js file and actually implemented a faster and better solution in the same file.
