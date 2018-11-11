@@ -14,7 +14,7 @@ const RequestBase = require("./RequestBase.js");
  */
 class Ladybug extends Callable {
   constructor(options = {}) {
-    if(!validateMethod(options.method || "get")) throw new Error("Invalid Request Method, expected one of (`get`, `put`, `post`, `patch`, `delete`)");
+    if(!validateMethod(options.method || "get")) throw new Error("Invalid Request Method. Expected one of (`get`, `put`, `post`, `patch`, `delete`)");
     super((options.method || "get").toLowerCase());
     this._query = {};
     this.data = null;
