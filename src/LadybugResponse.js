@@ -66,6 +66,15 @@ class LadybugResponse {
   get response() {
     return this.res;
   }
+
+  /**
+   * Gets a response header case insensitive
+   * @param {String} field - The header field name
+   * @returns {any}
+   */
+  get(field) {
+    return this.headers[field.toLowerCase()];
+  }
 }
 
 module.exports = LadybugResponse;

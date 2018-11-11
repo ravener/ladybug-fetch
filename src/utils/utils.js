@@ -40,6 +40,25 @@ class Utils {
   static clone(obj) {
     return Object.assign(Object.create(obj), obj);
   }
+  
+  static isAbsoluteURL(str) {
+    return /^[a-z][a-z0-9+.-]*:/.test(str);
+  }
+
+  static URLJoin(...args) {
+    return args
+      .join("/")
+      .replace(/[\/]+/g, "/") // eslint-disable-line no-useless-escape
+      .replace(/^(.+):\//, "$1://")
+      .replace(/^file:/, "file:/")
+      .replace(/\/(\?|&|#[^!])/g, "$1")
+      .replace(/\?/g, "&")
+      .replace("&", "?");
+  }
+  
+  static isRedirect(code) {
+    return ~[301, 302, 303, 305, 307, 308].indexOf(code);
+  }
 }
 
 module.exports = Utils;

@@ -3,7 +3,7 @@ const pkg = require("../package.json");
 const Request = require("./LadybugRequest.js");
 const { mergeObjects, clone } = require("./utils/utils.js");
 const { validateMethod } = require("./utils/validators.js");
-const RequestBase = require("./RequestBase");
+const RequestBase = require("./RequestBase.js");
 
 /**
  * The base instance class
@@ -16,30 +16,24 @@ class Ladybug extends Callable {
   constructor(options = {}) {
     if(!validateMethod(options.method || "get")) throw new Error("Invalid Request Method, expected one of (`get`, `put`, `post`, `patch`, `delete`)");
     super((options.method || "get").toLowerCase());
-    this.headers = {};
     this._query = {};
     this.data = null;
-    this.plugins = [];
+    this.headers = options.headers || {};
+    this.plugins = Array.isArray(options.plugins) ? options.plugins : [];
     this.baseURL = options.baseURL;
-
-    // The code behaves weird when not using property directly
-    // causing `this` to be undefined
-    // an example would be
-    // const { get } = require("ladybug-fetch");
-    // get("https://google.com") -> Cannot ready property 'request' of undefined
-    // So we bind them all here
     this.get = this.get.bind(this);
     this.post = this.post.bind(this);
     this.delete = this.delete.bind(this);
     this.patch = this.patch.bind(this);
     this.put = this.put.bind(this);
+    this.request = this.request.bind(this);
   }
 
   request(method, url, options = {}) {
     if(!validateMethod(method)) throw new Error("Invalid Request Method expected one of (`get`, `put`, `post`, `patch`, `delete`)");
     if(typeof url === "object") options = url;
     else options.url = url;
-    options.method = method;
+    options.method = method.toUpperCase();
     return new Request(mergeObjects({
       // We clone a few stuff here because passing the reference into the class
       // will cause the instance defaults to be touched.
@@ -53,29 +47,27 @@ class Ladybug extends Callable {
   }
 
   get(...args) {
-    return this.request("get", ...args);
+    return this.request("GET", ...args);
   }
 
   post(...args) {
-    return this.request("post", ...args);
+    return this.request("POST", ...args);
   }
 
   put(...args) {
-    return this.request("put", ...args);
+    return this.request("PUT", ...args);
   }
 
   patch(...args) {
-    return this.request("patch", ...args);
+    return this.request("PATCH", ...args);
   }
 
   delete(...args) {
-    return this.request("delete", ...args);
+    return this.request("DELETE", ...args);
   }
 
-  // Issues with TypeScript to export with name `delete`
-  // So export it with this alias
   del(...args) {
-    return this.delete(...args);
+    return this.request("DELETE", ...args);
   }
 
   static create(options = {}) {

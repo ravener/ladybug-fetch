@@ -14,18 +14,18 @@ function shouldUnzip(res) {
 const isStream = s => typeof s === "object" && typeof s.pipe === "function";
 
 module.exports = (request) => {
-  Array.from(request.plugins).map((plugin) => plugin(request));
+  request.plugins.map((plugin) => plugin(request));
   return new request.promiseLibrary((resolve, reject) => {
     const options = finalizeOptions(request);
     const lib = { "https:": https, "http:": http }[options.protocol];
     if(!lib) return reject(`Invalid or Unsupported Protocol '${options.protocol}'`);
     const req = lib.request(options);
 
-    req.on("response", async(res) => {
+    req.on("response", (res) => {
       const buffer = [];
-      //const body = await getBody(res, request.promiseLibrary);
       let stream = res;
       if(shouldUnzip(res)) stream = stream.pipe(zlib.createUnzip());
+
       stream
         .on("data", (chunk) => buffer.push(chunk))
         .on("error", (err) => reject(err))
@@ -40,9 +40,19 @@ module.exports = (request) => {
           return reject(err);
         });
     });
+
     req.once("error", (err) => reject(err));
     req.once("abort", () => reject(new Error("Request Aborted")));
-    if(isStream(request.data)) request.data.pipe(req);
-    else req.end(request.data);
+
+    if(request.data) {
+      if(isStream(request.data)) request.data.pipe(req);
+      else if(Array.isArray(request.data)) {
+        for(const chunk of request.data) req.write(chunk);
+        req.end();
+      }
+      else req.end(request.data);
+    } else if(request.form) {
+      req.end(request.form.build());
+    } else req.end();
   });
 };

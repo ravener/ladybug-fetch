@@ -1,26 +1,15 @@
-const { parse } = require("url");
 const querystring = require("querystring");
+const cleanJoin = require("./url.js");
 
-// TODO Cleanup this mess
-// if base url had a path it may not work as it only takes host from baseURL
-// find a workaround for that
+// Finalize request options and stuff before sending the request.
 module.exports = (req) => {
-  const options = {};
-  let url;
-  if(req.baseURL && !parse(req.url).protocol) {
-    url = parse(req.baseURL);
-    url.path = req.url;
-  } else {
-    url = parse(req.url);
+  const url = cleanJoin(req);
+  if(Object.keys(url.query).length) {
+    url.path = url.path + `?${querystring.stringify(url.query)}`;
   }
-  options.host = url.hostname;
-  if(url.port) options.port = url.port;
-  options.headers = req.headers;
-  options.method = req.method;
-  if(url.path) options.path = url.path;
-  if(Object.keys(req._query).length) {
-    options.path = options.path + "?" + querystring.stringify(req._query);
-  }
-  options.protocol = url.protocol;
-  return options;
+  url.method = req.method;
+  url.headers = req.headers;
+  delete url.query;
+  if(req.form) req.set("Content-Type", req.form.contentType);
+  return url;
 };

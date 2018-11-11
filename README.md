@@ -215,12 +215,13 @@ api("/route")
 ## TODO
 This library is still under early development and is not complete, Pull Requests are welcome if you want to contribute.
 
-- [ ] Add support for following redirect codes.
-- [ ] Form Data support
-- [ ] A good test suite
-- [x] ~~TypeScript typings~~ (Typings contributed by [@IceeMC](https://github.com/IceeMC) and fixed by me)
+- [x] ~~Add support for following redirect codes.~~ (kind of experimental though)
+- [x] ~~Form Data support~~
+- [ ] A good test suite.
+- [x] ~~TypeScript typings~~ (Typings contributed by [@IceeMC](https://github.com/IceeMC) and fixed by me, may still have some issues.)
+- [ ] Streams support? e.g `req.pipe(fs.createWriteStream("./out.txt"));`
 
 See also comments in code with `TODO`
 
 ## License
-MIT
+[MIT](LICENSE)

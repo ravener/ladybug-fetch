@@ -13,8 +13,10 @@ ladybug.Response = require("./LadybugResponse.js");
 ladybug.create = Ladybug.create;
 
 // Export Utils
-ladybug.mergeObjects = Utils.mergeObjects;
-ladybug.isPromise = Utils.isPromise;
+ladybug.utils = Utils;
+ladybug.Utils = Utils;
+
+ladybug.mime = require("./mime.js");
 
 // Assign helper functions
 Object.assign(ladybug, require("./utils/helpers.js"));

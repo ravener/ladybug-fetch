@@ -1,4 +1,6 @@
 const querystring = require("querystring");
+const mime = require("./mime.js");
+const FormData = require("./FormData.js");
 
 /**
  * The base request class implementing the chainable methods.
@@ -12,10 +14,27 @@ class RequestBase {
     this.baseURL = options.baseURL;
     this.headers = options.headers || {};
     this._query = options.query || {};
-    this.data = options.data || "";
+    this.data = options.data || null;
     this.promiseLibrary = options.promise || Promise;
     this.plugins = options.plugins || [];
+    this.form = null;
     this.validateStatus = options.status || function(s) { return s >= 200 && s < 400; };
+  }
+
+  /**
+   * Attachs a multipart/form-data field
+   * NOTE: do not set Content-Type header when using this, the library will set
+   * the appropriate header with boundary.
+   * @param {String} name - Field name
+   * @param {Buffer|Object|String} value - Field data
+   * @param {String} [filename] - filename if attaching a file, the extension will also be used to find the mime type.
+   * @returns {this}
+   */
+  attach(name, value, filename) {
+    if(this.data) throw new TypeError("Cannot mix form data with .send()");
+    if(!this.form) this.form = new FormData();
+    this.form.append(name, value, filename);
+    return this;
   }
 
   /**
@@ -66,6 +85,7 @@ class RequestBase {
    * @returns {this}
    */
   send(data) {
+    if(this.form) throw new TypeError("Cannot mix data with .attach()");
     if(this.headers["Content-Type"] && this.headers["Content-Type"].includes("application/x-www-form-urlencoded")) {
       this.data = querystring.stringify(data);
     } else if(typeof data === "object") {
@@ -111,8 +131,14 @@ class RequestBase {
     return this;
   }
 
+  accept(ext) {
+    return this.set("Accept", mime.lookup(ext));
+  }
+
+  // For Ladybug class since it extends another class while i also need this methods
+  // so we will add it through prototypes
   static applyTo(cls, ignore = []) {
-    for(const prop of ["set", "query", "promise", "use", "status", "send", "json"]) {
+    for(const prop of ["set", "query", "promise", "use", "status", "send", "json", "accept", "attach"]) {
       if(ignore.includes(prop)) continue;
       Object.defineProperty(cls.prototype, prop, Object.getOwnPropertyDescriptor(RequestBase.prototype, prop));
     }
