@@ -1,4 +1,3 @@
 node_modules
 package-lock.json
-# Tests are incomplete and iam not happy yet, will be public soon
-tests
+yarn.lock
