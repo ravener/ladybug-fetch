@@ -4,7 +4,8 @@
   "description": "A Promise based HTTP(S) client library for NodeJS",
   "main": "./src/index.js",
   "scripts": {
-    "test": "eslint ."
+    "lint": "eslint .",
+    "test": "ava tests/"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
   },
   "homepage": "https://github.com/freetnt5852/ladybug-fetch#readme",
   "devDependencies": {
-    "@types/node": "^10.11.4"
+    "@types/node": "^10.11.4",
+    "ava": "^0.25.0"
   }
 }
