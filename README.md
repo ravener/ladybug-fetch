@@ -1,6 +1,8 @@
 # Ladybug Fetch
 A Promise based HTTP(S) client library for NodeJS
 
+> **Note:** This package is deprecated. I do not maintain it anymore. It was one of my earliest packages that is now just an archive.
+
 ## Features
 - Lightweight (no dependencies)
 - Easy to use
